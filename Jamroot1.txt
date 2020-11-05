@@ -1,0 +1,531 @@
+#################################################################
+
+#                                                                                            J A M R O O T                                                                                                   #
+
+#################################################################
+
+ 
+
+if ( --veracode in  [ modules.peek : ARGV ] ) {
+
+               .gccflags = -gdwarf-2 -g3 -O0 -fno-builtin ;
+
+               mode = veracode ;
+
+}
+
+project slev5swxess
+
+                               : requirements
+
+                                               <toolset>msvc:<runtime-link>static
+
+                                               <toolset>msvc:<user-interface>gui
+
+                                               <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+
+                                               <toolset>sun:<stdlib>sun-stlport
+
+                                               <toolset>gcc:<cxxflags>-fno-strict-aliasing
+
+                                               <toolset>msvc:<define>WIN32
+
+                                               <toolset>msvc:<linkflags>/NODEFAULTLIB:msvcrt
+
+                                               <toolset>msvc:<linkflags>/NODEFAULTLIB:msvcrtd
+
+                                               <toolset>msvc:<linkflags>/NODEFAULTLIB:msvcprt
+
+                                               <toolset>msvc:<linkflags>/NODEFAULTLIB:msvcprtd
+
+                                               <toolset>msvc:<linkflags>kernel32.lib
+
+                                               <toolset>msvc:<linkflags>advapi32.lib
+
+                                               <toolset>msvc:<linkflags>psapi.lib
+
+                                               <toolset>msvc:<linkflags>ws2_32.lib
+
+                                               <toolset>msvc:<linkflags>dlcapi.lib
+
+                                               <toolset>msvc:<linkflags>gdi32.lib
+
+                                               <toolset>msvc:<linkflags>/IGNORE:4099
+
+                                               <toolset>gcc:<cxxflags>$(.gccflags)
+
+                                               <threading>multi
+
+                                               <address-model>32
+
+                                               <define>QUICKFIX_SUNGARD=1
+
+                                               <define>BOOST_ERROR_CODE_HEADER_ONLY=1
+
+                                               <define>BOOST_SYSTEM_NO_DEPRECATED=1
+
+                               ;
+
+ 
+
+ 
+
+#################################################################
+
+#                                             C O M P I L A T I O N                       A L I A S E S                                        #
+
+#################################################################
+
+ 
+
+# Single targets
+
+#alias example :               slev5swxess ;
+
+alias glvirtualap                                                : lib/glvirtualap//glvirtualap ;
+
+ 
+
+ 
+
+#################################################################
+
+#                                                                                            J A M F I L E                                                                                                       #
+
+#################################################################
+
+ 
+
+ 
+
+#################################################################
+
+#                                                            L O C A L              V A R I A B L E S                                                               #
+
+#################################################################
+
+ 
+
+local GL_ROOT = [ gl-root ] ;  
+
+ 
+
+# Get environnement variables to find the path of librairies
+
+import os ;
+
+local QUICKFIX_PATH = [ os.environ QUICKFIX_PATH ] ;
+
+local CURL_PATH = [ os.environ CURL_PATH ] ;
+
+local GL_OS_TAG       = [ gl-os-tag ] ;
+
+#################################################################
+
+#                                                            L I B R A R I E S  P A T H                                                                                #
+
+#################################################################
+
+ 
+
+# Used Libraries
+
+use-project /used_aplib                                                              : 10.2.1.14_SWXESS_2016_Q2_RH6_32 ;
+
+use-project /quickfixlibrary                        : $(QUICKFIX_PATH)/lib ;
+
+use-project /curllibrary                     : $(CURL_PATH)/lib ;
+
+path-constant BOOST_LIBS            : /sr/gldev/shrdlibs/boostlibs/1.64.0 ;
+
+path-constant /path_aplib                                          : 10.2.1.14_SWXESS_2016_Q2_RH6_32/lib ;
+
+ 
+
+#################################################################
+
+#                                             I N S T A L L A T I O N                     P A T H                                                                 #
+
+#################################################################
+
+ 
+
+constant INSTALL_DIR_ROOT_STRIPPED   : "bin_debug_threads" ;
+
+ 
+
+ 
+
+#################################################################
+
+#                                             I N S T A L L A T I O N                     A L I A S E S                                        #
+
+#################################################################
+
+ 
+
+#strip slev5swxess and copy target to a directory
+
+make slev5swxess
+
+                               :               slev5swxess_unstripped
+
+                               :               @common.strip
+
+                               :               <tag>@gl-tag
+
+                                               <target-type>EXE
+
+                                               <location>$(INSTALL_DIR_ROOT_STRIPPED)
+
+                               ;
+
+ 
+
+ 
+
+#################################################################
+
+#                                                                                            T A R G E T          S                                                                                                            #
+
+#################################################################
+
+ 
+
+ 
+
+sts-module slev5swxess_fortify
+
+                               :                                             
+
+                                               ./src/fix_manager.cpp
+
+                                               ./src/swxess_config_manager.cpp
+
+                                               ./src/swxess_connection.cpp
+
+                                               ./src/swxess_handler.cpp
+
+                                               ./src/swxess_manager.cpp
+
+                                               ./src/swxess_order_decoder.cpp
+
+                                               ./src/swxess_order_encoder.cpp
+
+                                               ./src/swxess_otc_decoder.cpp
+
+                                               ./src/swxess_otc_encoder.cpp
+
+                                               ./src/swxess_fields_decoder.cpp
+
+                                               ./src/swxess_fields_encoder.cpp
+
+                                               ./src/swxess_transaction_manager.cpp
+
+                                               ./src/swxess_executionReport.cpp
+
+                                               ./src/swxess_tradeCaptureReport.cpp
+
+                                               ./src/swxess_tradeCaptureReportAck.cpp
+
+                                               ./src/swxess_session_manager.cpp
+
+                                               ./src/swxess_resynchro_list.cpp
+
+                                               ./src/swxess_post_trading.cpp
+
+                                               ./src/swxess_parse_file.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/GLConnectP10.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/GLHandlerConsultationAP.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/GLSocketManagerAP.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glconnectvirtualap.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/gleventvirtualap.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glformaterbuilderap.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glhandlertreatcommandrequest.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glhandlertreatreply.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glhandlervirtualap.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/gllastpurgeinfo.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/glmanagervirtualap.cpp
+
+                                               #$(/path_aplib)/glvirtualap/src/initap.cpp                         
+
+ 
+
+                               :               #################################################################
+
+                                               #                                                                            r e q u i r e m e n t s                                                                                       #
+
+                                               #################################################################
+
+                                               #<link>static                                                                                                    
+
+                                               <include>inc
+
+                                               <include>10.2.1.14_SWXESS_2016_Q2_RH6_32/lib/skeleton/inc
+
+                                               <include>10.2.1.14_SWXESS_2016_Q2_RH6_32/inc
+
+                                               <include>$(QUICKFIX_PATH)
+
+                                               <include>$(CURL_PATH)/include
+
+                                               <include>$(BOOST_LIBS)
+
+                                               <include>$(/path_aplib)/glapi/inc
+
+                                               <include>$(/path_aplib)/glcnxmanager/inc
+
+                                               <include>$(/path_aplib)/glcodage/inc
+
+                                               <include>$(/path_aplib)/gldata/inc
+
+                                               <include>$(/path_aplib)/glencoder29xx/inc
+
+                                               <include>$(/path_aplib)/glencodergen/inc
+
+                                               <include>$(/path_aplib)/glencoderv5/inc
+
+                                               <include>$(/path_aplib)/gleventmgr/inc
+
+                                               <include>$(/path_aplib)/gllib/inc
+
+                                               <include>$(/path_aplib)/glmql/inc
+
+                                               <include>$(/path_aplib)/glslerecord/inc
+
+                                               <include>$(/path_aplib)/glgenericrecord/inc
+
+                                               <include>$(/path_aplib)/gltimer/inc
+
+                                               <include>$(/path_aplib)/gltools/inc
+
+                                               <include>$(/path_aplib)/gltypes/inc
+
+                                               <include>$(/path_aplib)/glvirtualap/inc
+
+                                               <include>$(/path_aplib)/kernelsle/inc
+
+                                               <include>$(/path_aplib)/gllog/inc
+
+                                               <include>$(/path_aplib)/glqql/inc
+
+                                               <include>$(/path_aplib)/glconflib/inc
+
+                                               <include>$(/path_aplib)/glsocket/inc
+
+                                               <include>$(/path_aplib)/glthread/inc
+
+                                               <include>$(/path_aplib)/../inc
+
+                                               <include>/sr/gldev/shrdlibs/sclib/9.31.3
+
+                                               <include>$(GL_ROOT)/infra/warnings/1.0.1.1
+
+                                               <include>$(GL_ROOT)/infra/reseau/1.0.1.24
+
+                                               <include>$(GL_ROOT)/infra/header_gl/1.0.1.7
+
+                                               <include>$(GL_ROOT)/infra/headerv5/1.0.1.1
+
+                                               <include>$(GL_ROOT)/infra/threads/9.1.2.0
+
+                                               <include>$(GL_ROOT)/infra/conflib/9.1.2.0
+
+                                               <include>$(GL_ROOT)/infra/codages/9.1.0.0
+
+                                               <include>$(GL_ROOT)/infra/interrx/1.0.1.6
+
+                                               <include>$(GL_ROOT)/infra/openssl/0.9.8g
+
+                                               <include>$(GL_ROOT)/infra/tcpip_gl/1.0.2.9
+
+                                               <include>$(GL_ROOT)/infra/glencrypt/9.1.2.2
+
+                                               <include>$(GL_ROOT)/glframework/1.0.0.17/
+
+                                               #<include>$(GL_ROOT)/glframework/1.0.0.17/glf_glapp/
+
+                                               #<include>$(GL_ROOT)/glframework/1.0.0.17/glf_glcodage/
+
+                                               #<include>$(GL_ROOT)/glframework/1.0.0.17/glf_glconflib/
+
+                                               #<include>$(GL_ROOT)/glframework/1.0.0.17/glf_gllog/
+
+                                               #<include>$(GL_ROOT)/glframework/1.0.0.17/glf_glnet/
+
+                                               <include>$(GL_ROOT)/glframework/1.0.0.17/glf_glsock/
+
+                                               <include>$(GL_ROOT)/glframework/1.0.0.17/glf_glthread/
+
+                                               <include>$(GL_ROOT)/glframework/1.0.0.17/glf_glutil/
+
+                                                                                             
+
+                                               <toolset>gcc:<define>LINUX
+
+                                               <define>$(GL_OS_TAG)
+
+                                               <location-prefix>build
+
+                                               <threading>multi
+
+                                               <tag>@gl-tag
+
+                                              
+
+                               :               #################################################################
+
+                                               #                                                                            d e f a u l t - b u i l d s                                                                    #
+
+                                               #################################################################
+
+                                              
+
+                               :               #################################################################
+
+                                               #                                                            u s a g e - r e q u i r e m e n t s                                                   #
+
+                                               #################################################################
+
+                                              
+
+                               ;
+
+                              
+
+                              
+
+# slev5swxess target                                                                                                                                  
+
+exe                        slev5swxess_unstripped
+
+                               :               #################################################################
+
+                                               #                                                                                            s o u r c e s                                                                                                      #
+
+                                               #################################################################
+
+                                               #[ glob src/*.cpp ]
+
+                                               ./src/fix_manager.cpp
+
+                                               ./src/swxess_config_manager.cpp
+
+                                               ./src/swxess_connection.cpp
+
+                                               ./src/swxess_handler.cpp
+
+                                               ./src/swxess_manager.cpp
+
+                                               ./src/swxess_order_decoder.cpp
+
+                                               ./src/swxess_order_encoder.cpp
+
+                                               ./src/swxess_otc_decoder.cpp
+
+                                               ./src/swxess_otc_encoder.cpp
+
+                                               ./src/swxess_fields_decoder.cpp
+
+                                               ./src/swxess_fields_encoder.cpp
+
+                                               ./src/swxess_transaction_manager.cpp
+
+                                               ./src/swxess_executionReport.cpp
+
+                                               ./src/swxess_tradeCaptureReport.cpp
+
+                                               ./src/swxess_tradeCaptureReportAck.cpp
+
+                                               ./src/swxess_session_manager.cpp
+
+                                               ./src/swxess_resynchro_list.cpp
+
+                                               ./src/swxess_post_trading.cpp
+
+                                               ./src/swxess_parse_file.cpp
+
+                                               /used_aplib//glvirtualap
+
+                                               /used_infra/glencrypt
+
+                                               /used_infra/tcpip_gl
+
+                                               /used_build_info//build_info
+
+                                               /quickfixlibrary//libquickfix
+
+                                               /curllibrary//libcurl
+
+                                               /used_aplib//lib/skeleton
+
+                                               /usr/lib/libxml2.so.2
+
+                                               #lib/rh5/libxml2-2.7.2/libs/libxml2.so.2
+
+                                               /system
+
+ 
+
+                               :               #################################################################
+
+                                               #                                                                            r e q u i r e m e n t s                                                                                       #
+
+                                               #################################################################
+
+                                               <link>static                                                                                                       
+
+                                               <include>inc
+
+                                               <include>10.2.1.14_SWXESS_2016_Q2_RH6_32/lib/skeleton/inc
+
+                                               <include>10.2.1.14_SWXESS_2016_Q2_RH6_32/inc
+
+                                               <include>$(QUICKFIX_PATH)
+
+                                               <include>$(CURL_PATH)/include
+
+                                               <include>$(BOOST_LIBS)
+
+                                               <toolset>msvc:<define>OS_NT
+
+                                               <toolset>gcc:<define>LINUX
+
+                                               <define>$(GL_OS_TAG)
+
+                                               <location-prefix>build
+
+                                               <threading>multi
+
+                                               <tag>@gl-tag
+
+                                              
+
+                               :               #################################################################
+
+                                               #                                                                            d e f a u l t - b u i l d s                                                                    #
+
+                                               #################################################################
+
+                                              
+
+                               :               #################################################################
+
+                                               #                                                            u s a g e - r e q u i r e m e n t s                                                   #
+
+                                               #################################################################
+
+                                              
+
+                               ;
